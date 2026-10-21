@@ -9,34 +9,27 @@
 # El resultado debe ser un diccionario cuyos valores sean otros diccionarios. 
 # Si un producto aparece en varias ventas, sus datos deben acumularse.
 
-
-
-
-
-#FALTA HACER
-
-
-
 def analizar_ventas(ventas):
-    agrupacion_ventas = [
-       
-    ]
+
+    productos_agrupados = {}
+
     for venta in ventas:
-        for codigo, valor in venta.items():
-            if 
+        producto = venta["producto"]
+        cantidad = venta["cantidad"]
+        precio = venta["precio"]
 
-            
-
-        else:
-            nuevo_diccionario = {
-                "producto": venta["producto"],
-                "cantidad_total": venta["cantidad"],
-                "importe_total": venta["precio"]*venta["cantidad"]
+        if producto not in productos_agrupados:
+            productos_agrupados[producto] = {
+                "cantidad_total": cantidad,
+                "importe_total": cantidad*precio,
+                "ventas_hechas": 1
             }
-            agrupacion_ventas.append(nuevo_diccionario)
-        
-             
-    return
+        else:
+            productos_agrupados[producto]["cantidad_total"] += cantidad
+            productos_agrupados[producto]["importe_total"] += cantidad*precio
+            productos_agrupados[producto]["ventas_hechas"] += 1
+    
+    return productos_agrupados
 
 
 ventas = [
@@ -48,24 +41,12 @@ ventas = [
     {"producto": "P001", "cantidad": 1, "precio": 1000}
 ]
 
-analizar_ventas(ventas)
+resultado = analizar_ventas(ventas)
 
-
-# resultado = analizar_ventas(ventas)
-
-# for codigo, datos in resultado.items():
-#     print(codigo, datos)
+for codigo, datos in resultado.items():
+    print(codigo, datos)
 
 # Resultado esperado:
 # P001 {'cantidad_total': 6, 'importe_total': 6000, 'operaciones': 3}
 # P002 {'cantidad_total': 3, 'importe_total': 7500, 'operaciones': 2}
 # P003 {'cantidad_total': 4, 'importe_total': 2000, 'operaciones': 1}
-
-
-
-
-inventario = [
-    {"nombre": "Teclado", "precio": 15990, "stock": 12},
-    {"nombre": "Mouse", "precio": 8990, "stock": 5},
-    {"nombre": "Monitor", "precio": 129990, "stock": 3}
-]
