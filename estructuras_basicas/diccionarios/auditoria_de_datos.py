@@ -9,8 +9,38 @@
 # 4. Si todos los empleados están correctamente asociados a un departamento válido.
 
 def auditar_empleados(empleados, departamentos):
+    
+    # Inicializamos en 0 la cantidad de empleados por cada departamento existente.
+    # Comprensión de diccionarios
+    cantidad_empleado_depa = {depto: 0 for depto in departamentos}
+    depas_personas = set()
+    empleado_depa_inexistente = {}
+    depas_sin_empleados = set()
+    datos_consistente = True
 
-    return 
+    for id, empleado in empleados.items():
+        depto = empleado["departamento"]
+
+        if depto not in departamentos:
+            empleado_depa_inexistente[id] = empleado["nombre"]
+
+        # Contar cuántos empleados están asociados a cada departamento
+        if depto in cantidad_empleado_depa:
+            cantidad_empleado_depa[depto] += 1
+
+        # Guarda los depas asociados a personas para comparar despues
+        depas_personas.add(depto)
+
+    # Buscar deptos y compoarar con los de los empleados
+    for nombre_depto in departamentos:
+        if nombre_depto not in depas_personas:
+            depas_sin_empleados.add(nombre_depto)
+
+    if empleado_depa_inexistente:
+        datos_consistente = False
+
+    return (empleado_depa_inexistente, depas_sin_empleados, 
+    cantidad_empleado_depa, datos_consistente)
 
 
 empleados = {
@@ -29,7 +59,17 @@ departamentos = {
     "MARKETING": "Marketing"
 }
 
+(empleado_depa_inexistente, depas_sin_empleados, 
+cantidad_empleado_depa, datos_consistente) = auditar_empleados(empleados, departamentos)
 
+respuesta = f"""
+Empleados con departamento inexistente: {empleado_depa_inexistente}
+Departamentos sin empleados: {depas_sin_empleados}
+Cantidad de empleados por departamento: {cantidad_empleado_depa}
+¿Los datos son consistentes? {"Sí" if datos_consistente else "No"}
+"""
+
+print(respuesta)
 
 # Resultado esperado:
 # Empleados con departamento inexistente: {104: 'Elena'}
